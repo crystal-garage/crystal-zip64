@@ -19,7 +19,7 @@ Inspired by <https://github.com/WeTransfer/cr_zip_tricks>
 
    ```yaml
    dependencies:
-     crystal-zip64:
+     zip64:
        github: crystal-garage/crystal-zip64
    ```
 
