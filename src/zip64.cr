@@ -1,4 +1,4 @@
-require "./compress/zip64/zip"
+require "./zip64/zip"
 
-module Compress::Zip64
+module Zip64
 end

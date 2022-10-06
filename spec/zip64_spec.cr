@@ -1,4 +1,4 @@
 require "./spec_helper"
 
-describe Compress::Zip64 do
+describe Zip64 do
 end

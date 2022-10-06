@@ -8,7 +8,7 @@ require "./file_info"
 # ```
 # require "zip64"
 #
-# Compress::Zip64::File.open("./file.zip") do |file|
+# Zip64::File.open("./file.zip") do |file|
 #   # Iterate through all entries printing their filename and contents
 #   file.entries.each do |entry|
 #     p entry.filename
@@ -24,7 +24,7 @@ require "./file_info"
 #   end
 # end
 # ```
-class Compress::Zip64::File
+class Zip64::File
   # Returns all entries inside this zip file.
   getter entries : Array(Entry)
 
@@ -89,7 +89,7 @@ class Compress::Zip64::File
     find_directory_end_offset(64) ||
       find_directory_end_offset(1024) ||
       find_directory_end_offset(65 * 1024) ||
-      raise Compress::Zip64::Error.new("Couldn't find directory end signature in the last 65KB")
+      raise Zip64::Error.new("Couldn't find directory end signature in the last 65KB")
   end
 
   private def find_directory_end_offset(buf_size)
@@ -188,7 +188,7 @@ class Compress::Zip64::File
         # at least check that the signature is OK (these are 4 bytes)
         signature = read(io, UInt32)
         if signature != FileInfo::SIGNATURE
-          raise Compress::Zip64::Error.new("Wrong local file header signature (expected 0x#{FileInfo::SIGNATURE.to_s(16)}, got 0x#{signature.to_s(16)})")
+          raise Zip64::Error.new("Wrong local file header signature (expected 0x#{FileInfo::SIGNATURE.to_s(16)}, got 0x#{signature.to_s(16)})")
         end
 
         # Skip most of the headers except filename length and extra length

@@ -1,4 +1,4 @@
-module Compress::Zip64
+module Zip64
   # Counts written bytes. Intended to be used with IO::MultiWriter as one of the outputs
   class OutputCounter < IO
     getter bytes_written = 0_u64

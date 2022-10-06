@@ -37,7 +37,7 @@ require "zip64"
 ### Reader
 
 ```crystal
-Compress::Zip64::Reader.open("./file.zip") do |zip|
+Zip64::Reader.open("./file.zip") do |zip|
   zip.each_entry do |entry|
     p entry.filename
     p entry.file?
@@ -51,7 +51,7 @@ end
 
 ```crystal
 File.open("./file.zip", "w") do |file|
-  Compress::Zip64::Writer.open(file) do |zip|
+  Zip64::Writer.open(file) do |zip|
     # Add a file with a String content
     zip.add "foo.txt", "contents of foo"
 

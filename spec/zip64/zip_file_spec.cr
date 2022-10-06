@@ -1,17 +1,17 @@
-require "../../spec_helper"
+require "../spec_helper"
 
-describe Compress::Zip64 do
+describe Zip64 do
   it "reads file from memory" do
     io = IO::Memory.new
 
-    Compress::Zip64::Writer.open(io) do |zip|
+    Zip64::Writer.open(io) do |zip|
       zip.add "foo.txt", "contents of foo"
       zip.add "bar.txt", "contents of bar"
     end
 
     io.rewind
 
-    Compress::Zip64::File.open(io) do |zip|
+    Zip64::File.open(io) do |zip|
       entries = zip.entries
       entries.size.should eq(2)
 
@@ -39,14 +39,14 @@ describe Compress::Zip64 do
 
     begin
       File.open(filename, "w") do |file|
-        Compress::Zip64::Writer.open(file) do |zip|
+        Zip64::Writer.open(file) do |zip|
           zip.add "foo.txt", "contents of foo"
           zip.add "bar.txt", "contents of bar"
         end
       end
 
       File.open(filename, "r") do |file|
-        Compress::Zip64::File.open(file) do |zip|
+        Zip64::File.open(file) do |zip|
           entries = zip.entries
           entries.size.should eq(2)
 
@@ -76,14 +76,14 @@ describe Compress::Zip64 do
   it "writes comment" do
     io = IO::Memory.new
 
-    Compress::Zip64::Writer.open(io) do |zip|
-      zip.add Compress::Zip64::Writer::Entry.new("foo.txt", comment: "some comment"),
+    Zip64::Writer.open(io) do |zip|
+      zip.add Zip64::Writer::Entry.new("foo.txt", comment: "some comment"),
         "contents of foo"
     end
 
     io.rewind
 
-    Compress::Zip64::File.open(io) do |zip|
+    Zip64::File.open(io) do |zip|
       zip["foo.txt"].comment.should eq("some comment")
     end
   end
@@ -91,7 +91,7 @@ describe Compress::Zip64 do
   it "reads big file" do
     io = IO::Memory.new
 
-    Compress::Zip64::Writer.open(io) do |zip|
+    Zip64::Writer.open(io) do |zip|
       100.times do |i|
         zip.add "foo#{i}.txt", "some contents #{i}"
       end
@@ -99,13 +99,13 @@ describe Compress::Zip64 do
 
     io.rewind
 
-    Compress::Zip64::File.open(io) do |zip|
+    Zip64::File.open(io) do |zip|
       zip.entries.size.should eq(100)
     end
   end
 
   it "reads zip file with different extra in local file header and central directory header" do
-    Compress::Zip64::File.open(datapath("test.zip")) do |zip|
+    Zip64::File.open(datapath("test.zip")) do |zip|
       zip.entries.size.should eq(2)
       zip["one.txt"].open(&.gets_to_end).should eq("One")
       zip["two.txt"].open(&.gets_to_end).should eq("Two")
@@ -115,17 +115,17 @@ describe Compress::Zip64 do
   it "reads zip comment" do
     io = IO::Memory.new
 
-    Compress::Zip64::Writer.open(io) do |zip|
+    Zip64::Writer.open(io) do |zip|
       zip.comment = "zip comment"
     end
 
     io.rewind
 
-    Compress::Zip64::File.open(io) do |zip|
+    Zip64::File.open(io) do |zip|
       zip.comment.should eq("zip comment")
     end
   end
 
-  typeof(Compress::Zip64::File.new("file.zip"))
-  typeof(Compress::Zip64::File.open("file.zip") { })
+  typeof(Zip64::File.new("file.zip"))
+  typeof(Zip64::File.open("file.zip") { })
 end

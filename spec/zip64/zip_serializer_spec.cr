@@ -1,4 +1,4 @@
-require "../../spec_helper"
+require "../spec_helper"
 
 class ByteReader < IO::Memory
   def read_1b
@@ -33,13 +33,13 @@ class ByteReader < IO::Memory
   end
 end
 
-describe Compress::Zip64::Serializer do
+describe Zip64::Serializer do
   describe "#write_local_file_header" do
     it "writes the local file header for an entry that does not require Zip64" do
       buf = ByteReader.new
       mtime = Time.utc(2016, 7, 17, 13, 48)
 
-      Compress::Zip64::Serializer.new.write_local_file_header(io: buf,
+      Zip64::Serializer.new.write_local_file_header(io: buf,
         filename: "foo.bin",
         compressed_size: 768,
         uncompressed_size: 901,
@@ -79,7 +79,7 @@ describe Compress::Zip64::Serializer do
       buf = ByteReader.new
       mtime = Time.utc(2016, 7, 17, 13, 48)
 
-      Compress::Zip64::Serializer.new.write_local_file_header(io: buf,
+      Zip64::Serializer.new.write_local_file_header(io: buf,
         filename: "foo.bin",
         gp_flags: 12,
         crc32: 456,
@@ -113,7 +113,7 @@ describe Compress::Zip64::Serializer do
       buf = ByteReader.new
       mtime = Time.utc(2016, 7, 17, 13, 48)
 
-      Compress::Zip64::Serializer.new.write_local_file_header(io: buf,
+      Zip64::Serializer.new.write_local_file_header(io: buf,
         gp_flags: 12,
         crc32: 456,
         compressed_size: 0xFFFFFFFF + 1,
@@ -147,7 +147,7 @@ describe Compress::Zip64::Serializer do
     it "writes 4-byte sizes into the data descriptor for standard file sizes" do
       buf = ByteReader.new
 
-      Compress::Zip64::Serializer.new.write_data_descriptor(io: buf, crc32: 123, compressed_size: 89_821, uncompressed_size: 990_912)
+      Zip64::Serializer.new.write_data_descriptor(io: buf, crc32: 123, compressed_size: 89_821, uncompressed_size: 990_912)
 
       buf.rewind
       buf.read_uint32.should eq(0x08074b50) # Signature
@@ -160,7 +160,7 @@ describe Compress::Zip64::Serializer do
     it "writes 8-byte sizes into the data descriptor for Zip64 compressed file size" do
       buf = ByteReader.new
 
-      Compress::Zip64::Serializer.new.write_data_descriptor(io: buf,
+      Zip64::Serializer.new.write_data_descriptor(io: buf,
         crc32: 123,
         compressed_size: (0xFFFFFFFF + 1),
         uncompressed_size: 990_912)
@@ -176,7 +176,7 @@ describe Compress::Zip64::Serializer do
     it "writes 8-byte sizes into the data descriptor for Zip64 uncompressed file size" do
       buf = ByteReader.new
 
-      Compress::Zip64::Serializer.new.write_data_descriptor(io: buf,
+      Zip64::Serializer.new.write_data_descriptor(io: buf,
         crc32: 123,
         compressed_size: 123,
         uncompressed_size: 0xFFFFFFFF + 1)
@@ -194,7 +194,7 @@ describe Compress::Zip64::Serializer do
     it "writes the file header for a small-ish entry" do
       buf = ByteReader.new
 
-      Compress::Zip64::Serializer.new.write_central_directory_file_header(io: buf,
+      Zip64::Serializer.new.write_central_directory_file_header(io: buf,
         local_file_header_location: 898_921,
         gp_flags: 555,
         storage_mode: 23,
@@ -228,7 +228,7 @@ describe Compress::Zip64::Serializer do
     it "writes the file header for an entry that contains an empty directory" do
       buf = ByteReader.new
 
-      Compress::Zip64::Serializer.new.write_central_directory_file_header(io: buf,
+      Zip64::Serializer.new.write_central_directory_file_header(io: buf,
         local_file_header_location: 898_921,
         gp_flags: 555,
         storage_mode: 23,
@@ -262,7 +262,7 @@ describe Compress::Zip64::Serializer do
     it "writes the file header for an entry that requires Zip64 extra because of the uncompressed size" do
       buf = ByteReader.new
 
-      Compress::Zip64::Serializer.new.write_central_directory_file_header(io: buf,
+      Zip64::Serializer.new.write_central_directory_file_header(io: buf,
         local_file_header_location: 898_921,
         gp_flags: 555,
         storage_mode: 23,
@@ -305,7 +305,7 @@ describe Compress::Zip64::Serializer do
     it "writes the file header for an entry that requires Zip64 extra because of the compressed size" do
       buf = ByteReader.new
 
-      Compress::Zip64::Serializer.new.write_central_directory_file_header(io: buf,
+      Zip64::Serializer.new.write_central_directory_file_header(io: buf,
         local_file_header_location: 898_921,
         gp_flags: 555,
         storage_mode: 23,
@@ -346,7 +346,7 @@ describe Compress::Zip64::Serializer do
     it "writes the file header for an entry that requires Zip64 extra because of the local file header offset being beyound 4GB" do
       buf = ByteReader.new
 
-      Compress::Zip64::Serializer.new.write_central_directory_file_header(io: buf,
+      Zip64::Serializer.new.write_central_directory_file_header(io: buf,
         local_file_header_location: 0xFFFFFFFFF + 1,
         gp_flags: 555,
         storage_mode: 23,
@@ -391,7 +391,7 @@ describe Compress::Zip64::Serializer do
       buf = ByteReader.new
 
       num_files = rand(8..190)
-      Compress::Zip64::Serializer.new.write_end_of_central_directory(io: buf,
+      Zip64::Serializer.new.write_end_of_central_directory(io: buf,
         start_of_central_directory_location: 9_091_211,
         central_directory_size: 9_091,
         num_files_in_archive: num_files, comment: "xyz")
@@ -414,7 +414,7 @@ describe Compress::Zip64::Serializer do
     it "writes out the custom comment" do
       buf = ByteReader.new
       comment = "Ohai mate"
-      Compress::Zip64::Serializer.new.write_end_of_central_directory(io: buf,
+      Zip64::Serializer.new.write_end_of_central_directory(io: buf,
         start_of_central_directory_location: 9_091_211,
         central_directory_size: 9_091,
         num_files_in_archive: 4,
@@ -430,7 +430,7 @@ describe Compress::Zip64::Serializer do
       buf = ByteReader.new
 
       num_files = rand(8..190)
-      Compress::Zip64::Serializer.new.write_end_of_central_directory(io: buf,
+      Zip64::Serializer.new.write_end_of_central_directory(io: buf,
         start_of_central_directory_location: 0xFFFFFFFF + 3,
         central_directory_size: 9091,
         num_files_in_archive: num_files)
@@ -471,7 +471,7 @@ describe Compress::Zip64::Serializer do
     it "writes out the Zip64 EOCD if the archive has more than 0xFFFF files" do
       buf = ByteReader.new
 
-      Compress::Zip64::Serializer.new.write_end_of_central_directory(io: buf,
+      Zip64::Serializer.new.write_end_of_central_directory(io: buf,
         start_of_central_directory_location: 123,
         central_directory_size: 9_091,
         num_files_in_archive: 0xFFFF + 1, comment: "")
@@ -491,7 +491,7 @@ describe Compress::Zip64::Serializer do
     it "writes out the Zip64 EOCD if the central directory size exceeds 0xFFFFFFFF" do
       buf = ByteReader.new
 
-      Compress::Zip64::Serializer.new.write_end_of_central_directory(io: buf,
+      Zip64::Serializer.new.write_end_of_central_directory(io: buf,
         start_of_central_directory_location: 123,
         central_directory_size: 0xFFFFFFFF + 2,
         num_files_in_archive: 5, comment: "Foooo")

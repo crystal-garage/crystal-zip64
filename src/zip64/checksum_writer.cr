@@ -1,4 +1,4 @@
-module Compress::Zip64
+module Zip64
   # Counts written bytes and optionally computes a CRC32
   # checksum while writing to an underlying IO.
   private class ChecksumWriter < IO

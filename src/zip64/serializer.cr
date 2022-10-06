@@ -1,4 +1,4 @@
-class Compress::Zip64::Serializer
+class Zip64::Serializer
   # All of these are aliased to Int even though they do not have the same
   # capacity internally - this is done to prevent callers from having to downcast
   # to a specific Int subtype manually. Write methods protect from overflows at runtime.

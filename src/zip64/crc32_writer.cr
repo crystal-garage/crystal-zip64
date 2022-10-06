@@ -1,4 +1,4 @@
-module Compress::Zip64
+module Zip64
   # Computes the CRC32 checksum of bytes being written into it. Best used
   # in combination with an IO::MultiWriter
   class CRC32Writer < IO

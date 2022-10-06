@@ -13,7 +13,7 @@ require "./file_info"
 # ```
 # require "zip64"
 #
-# Compress::Zip64::Reader.open("./file.zip") do |zip|
+# Zip64::Reader.open("./file.zip") do |zip|
 #   zip.each_entry do |entry|
 #     p entry.filename
 #     p entry.file?
@@ -22,7 +22,7 @@ require "./file_info"
 #   end
 # end
 # ```
-class Compress::Zip64::Reader
+class Zip64::Reader
   # Whether to close the enclosed `IO` when closing this reader.
   property? sync_close = false
 
@@ -134,7 +134,7 @@ class Compress::Zip64::Reader
 
   private def verify_checksum(entry)
     if entry.crc32 != entry.checksum_io.crc32
-      raise Compress::Zip64::Error.new("Checksum failed for entry #{entry.filename} (expected #{entry.crc32}, got #{entry.checksum_io.crc32}")
+      raise Zip64::Error.new("Checksum failed for entry #{entry.filename} (expected #{entry.crc32}, got #{entry.checksum_io.crc32}")
     end
   end
 

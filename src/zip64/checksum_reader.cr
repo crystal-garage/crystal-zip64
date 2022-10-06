@@ -1,4 +1,4 @@
-module Compress::Zip64
+module Zip64
   # Computes a CRC32 while reading from an underlying IO,
   # optionally verifying the computed value against an
   # expected one.
@@ -12,7 +12,7 @@ module Compress::Zip64
       read_bytes = @io.read(slice)
       if read_bytes == 0
         if (expected_crc32 = @expected_crc32) && crc32 != expected_crc32
-          raise Compress::Zip64::Error.new("Checksum failed for entry #{@filename} (expected #{expected_crc32}, got #{crc32}")
+          raise Zip64::Error.new("Checksum failed for entry #{@filename} (expected #{expected_crc32}, got #{crc32}")
         end
       else
         @crc32 = ::Digest::CRC32.update(slice[0, read_bytes], @crc32)

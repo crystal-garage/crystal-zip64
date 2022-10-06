@@ -9,7 +9,7 @@ require "./serializer"
 # require "zip64"
 #
 # File.open("./file.zip", "w") do |file|
-#   Compress::Zip64::Writer.open(file) do |zip|
+#   Zip64::Writer.open(file) do |zip|
 #     # Add a file with a String content
 #     zip.add "foo.txt", "contents of foo"
 #
@@ -24,7 +24,7 @@ require "./serializer"
 #   end
 # end
 # ```
-class Compress::Zip64::Writer
+class Zip64::Writer
   # Gets raised if you try to add the same filename to a ZIP archive twice
   class DuplicateEntryFilename < ArgumentError
   end
