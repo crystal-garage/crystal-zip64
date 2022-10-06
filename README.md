@@ -4,8 +4,9 @@
 
 An alternate ZIP reader and writer for Crystal.
 
-- Drop-in replacement for `Compress::Zip`.
+- Drop-in replacement for `Compress::Zip`
 - Allows you to compress files bigger than 4GB
+- Tested on Linux, macOS and Windows
 
 Extracted from <https://github.com/crystal-lang/crystal/pull/11396>.
 Based on <https://github.com/crystal-lang/crystal/pull/7236>.
