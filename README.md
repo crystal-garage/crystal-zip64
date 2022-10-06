@@ -1,5 +1,7 @@
 # crystal-zip64
 
+[![Crystal CI](https://github.com/crystal-garage/crystal-zip64/actions/workflows/crystal.yml/badge.svg)](https://github.com/crystal-garage/crystal-zip64/actions/workflows/crystal.yml)
+
 An alternate ZIP reader and writer for Crystal.
 
 - Drop-in replacement for `Compress::Zip::Writer`
