@@ -17,7 +17,7 @@ Inspired by <https://github.com/WeTransfer/cr_zip_tricks>
    ```yaml
    dependencies:
      crystal-zip64:
-       github: your-github-user/crystal-zip64
+       github: crystal-garage/crystal-zip64
    ```
 
 2. Run `shards install`
@@ -36,7 +36,7 @@ TODO: Write development instructions here
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/crystal-zip64/fork>)
+1. Fork it (<https://github.com/crystal-garage/crystal-zip64/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
