@@ -1,0 +1,12 @@
+name: zip64
+version: 0.1.0
+
+description: An alternate ZIP reader and writer for Crystal
+
+authors:
+  - Julik Tarkhanov <me@julik.nl>
+  - Anton Maminov <anton.maminov@gmail.com>
+
+crystal: 1.5.1
+
+license: MIT
