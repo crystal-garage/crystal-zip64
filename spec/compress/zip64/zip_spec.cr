@@ -38,8 +38,8 @@ describe Compress::Zip64 do
     extra = Bytes[1, 2, 3, 4]
 
     Compress::Zip64::Writer.open(io) do |zip|
-      zip.add(Compress::Zip64::Writer::Entry.new("foo.txt", time: time, extra: extra)) do |io|
-        io.print("contents of foo")
+      zip.add(Compress::Zip64::Writer::Entry.new("foo.txt", time: time, extra: extra)) do |_io|
+        _io.print("contents of foo")
       end
     end
 
