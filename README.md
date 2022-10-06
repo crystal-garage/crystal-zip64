@@ -1,6 +1,10 @@
 # crystal-zip64
 
 [![Crystal CI](https://github.com/crystal-garage/crystal-zip64/actions/workflows/crystal.yml/badge.svg)](https://github.com/crystal-garage/crystal-zip64/actions/workflows/crystal.yml)
+[![GitHub release](https://img.shields.io/github/release/crystal-garage/crystal-zip64.svg)](https://github.com/crystal-garage/crystal-zip64/releases)
+[![Commits Since Last Release](https://img.shields.io/github/commits-since/crystal-garage/crystal-zip64/latest.svg)](https://github.com/crystal-garage/crystal-zip64/pulse)
+[![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://crystal-garage.github.io/crystal-zip64/)
+[![License](https://img.shields.io/github/license/crystal-garage/crystal-zip64.svg)](https://github.com/crystal-garage/crystal-zip64/blob/master/LICENSE)
 
 An alternate ZIP reader and writer for Crystal.
 
