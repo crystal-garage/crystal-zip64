@@ -19,6 +19,19 @@ jobs:
       - name: Check format
         run: crystal tool format --check
 
+  check_ameba:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Crystal Ameba Linter
+        id: crystal-ameba
+        uses: crystal-ameba/github-action@v0.5.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   test:
     strategy:
       fail-fast: false
