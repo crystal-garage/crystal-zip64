@@ -63,6 +63,9 @@ File.open("./file.zip", "w") do |file|
     # Add a file by referencing a file in the filesystem
     # (the file is automatically closed after this call)
     zip.add("baz.txt", File.open("./some_file.txt"))
+
+    # Add a directory
+    zip.add_dir("dir")
   end
 end
 ```
