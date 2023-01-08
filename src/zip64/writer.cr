@@ -57,14 +57,14 @@ class Zip64::Writer
 
   # Creates a new writer to the given *io*, yields it to the given block,
   # and closes it at the end.
-  def self.open(io : IO, sync_close = false)
+  def self.open(io : IO, sync_close = false, &)
     writer = new(io, sync_close: sync_close)
     yield writer ensure writer.close
   end
 
   # Creates a new writer to the given *filename*, yields it to the given block,
   # and closes it at the end.
-  def self.open(filename : Path | String)
+  def self.open(filename : Path | String, &)
     writer = new(filename)
     yield writer ensure writer.close
   end
@@ -72,7 +72,7 @@ class Zip64::Writer
   # Adds an entry that will have the given *filename* and current
   # time (`Time.utc`) and yields an `IO` to write that entry's
   # contents.
-  def add(filename : Path | String)
+  def add(filename : Path | String, &)
     add(Entry.new(filename.to_s)) do |io|
       yield io
     end
@@ -85,7 +85,7 @@ class Zip64::Writer
   # Entry can be configured the same way as for `add()` without the block, however
   # the bit 3 of the general_purpose_bit_flag is going to be forcibly set, and the
   # compressed/uncompressed sizes and CRC32 are going to be reset to 0.
-  def add(entry : Entry)
+  def add(entry : Entry, &)
     # Configure the entry for data descriptor use
     # bit 3: "use data descriptor" flag - if it is set, the crc32 and sizes
     # must be written as 0 in the local entry header
