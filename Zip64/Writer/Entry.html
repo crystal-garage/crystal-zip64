@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Crystal Docs 1.18.2">
+<meta name="crystal_docs.project_version" content="main">
+<meta name="crystal_docs.project_name" content="zip64">
+
+
+
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/doc.js"></script>
+
+  <meta name="repository-name" content="zip64">
+  <title>Zip64::Writer::Entry - zip64 main</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill="currentColor" fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<input type="checkbox" id="sidebar-btn">
+<label for="sidebar-btn" id="sidebar-btn-label">
+  <svg class="open" xmlns="http://www.w3.org/2000/svg" height="2em" width="2em" viewBox="0 0 512 512"><title>Open Sidebar</title><path fill="currentColor" d="M80 96v64h352V96H80zm0 112v64h352v-64H80zm0 112v64h352v-64H80z"></path></svg>
+  <svg class="close" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 512 512"><title>Close Sidebar</title><path fill="currentColor" d="m118.6 73.4-45.2 45.2L210.7 256 73.4 393.4l45.2 45.2L256 301.3l137.4 137.3 45.2-45.2L301.3 256l137.3-137.4-45.2-45.2L256 210.7Z"></path></svg>
+</label>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../../index.html">
+          zip64
+        </a>
+      </h1>
+
+      <span class="project-version">
+        main
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="zip64/Zip64" data-name="zip64">
+      <a href="../../Zip64.html">Zip64</a>
+      
+        <ul>
+  
+  <li class=" " data-id="zip64/Zip64/CompressionMethod" data-name="zip64::compressionmethod">
+      <a href="../../Zip64/CompressionMethod.html">CompressionMethod</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/CRC32Writer" data-name="zip64::crc32writer">
+      <a href="../../Zip64/CRC32Writer.html">CRC32Writer</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/Error" data-name="zip64::error">
+      <a href="../../Zip64/Error.html">Error</a>
+      
+    </li>
+  
+  <li class="parent " data-id="zip64/Zip64/File" data-name="zip64::file">
+      <a href="../../Zip64/File.html">File</a>
+      
+        <ul>
+  
+  <li class=" " data-id="zip64/Zip64/File/Entry" data-name="zip64::file::entry">
+      <a href="../../Zip64/File/Entry.html">Entry</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/FileInfo" data-name="zip64::fileinfo">
+      <a href="../../Zip64/FileInfo.html">FileInfo</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/OutputCounter" data-name="zip64::outputcounter">
+      <a href="../../Zip64/OutputCounter.html">OutputCounter</a>
+      
+    </li>
+  
+  <li class="parent " data-id="zip64/Zip64/Reader" data-name="zip64::reader">
+      <a href="../../Zip64/Reader.html">Reader</a>
+      
+        <ul>
+  
+  <li class=" " data-id="zip64/Zip64/Reader/Entry" data-name="zip64::reader::entry">
+      <a href="../../Zip64/Reader/Entry.html">Entry</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="zip64/Zip64/Serializer" data-name="zip64::serializer">
+      <a href="../../Zip64/Serializer.html">Serializer</a>
+      
+        <ul>
+  
+  <li class=" " data-id="zip64/Zip64/Serializer/ZipCRC32" data-name="zip64::serializer::zipcrc32">
+      <a href="../../Zip64/Serializer/ZipCRC32.html">ZipCRC32</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/Serializer/ZipFilesize" data-name="zip64::serializer::zipfilesize">
+      <a href="../../Zip64/Serializer/ZipFilesize.html">ZipFilesize</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/Serializer/ZipGpFlags" data-name="zip64::serializer::zipgpflags">
+      <a href="../../Zip64/Serializer/ZipGpFlags.html">ZipGpFlags</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/Serializer/ZipLocation" data-name="zip64::serializer::ziplocation">
+      <a href="../../Zip64/Serializer/ZipLocation.html">ZipLocation</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/Serializer/ZipStorageMode" data-name="zip64::serializer::zipstoragemode">
+      <a href="../../Zip64/Serializer/ZipStorageMode.html">ZipStorageMode</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="zip64/Zip64/Writer" data-name="zip64::writer">
+      <a href="../../Zip64/Writer.html">Writer</a>
+      
+        <ul>
+  
+  <li class=" " data-id="zip64/Zip64/Writer/DuplicateEntryFilename" data-name="zip64::writer::duplicateentryfilename">
+      <a href="../../Zip64/Writer/DuplicateEntryFilename.html">DuplicateEntryFilename</a>
+      
+    </li>
+  
+  <li class=" current" data-id="zip64/Zip64/Writer/Entry" data-name="zip64::writer::entry">
+      <a href="../../Zip64/Writer/Entry.html">Entry</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">
+    class
+  </span> Zip64::<wbr>Writer::<wbr>Entry
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Zip64/Writer/Entry.html">Zip64::Writer::Entry</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>An entry to write into a <code><a href="../../Zip64/Writer.html">Zip64::Writer</a></code>.</p>
+
+
+
+
+
+
+
+  <h2>
+    <a id="included-modules" class="anchor" href="#included-modules">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Included Modules
+  </h2>
+  <ul class="other-types-list">
+    
+      <li class="other-type"><a href="../../Zip64/FileInfo.html">Zip64::FileInfo</a></li>
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L237" target="_blank">
+        zip64/writer.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+
+  <div class="methods-inherited">
+    
+      
+
+  <h3>Instance methods inherited from module <code><a href="../../Zip64/FileInfo.html">Zip64::FileInfo</a></code></h3>
+  
+  
+    <a href="../../Zip64/FileInfo.html#comment-instance-method" class="tooltip">
+      <span>comment</span>
+    comment</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#comment%3D%28comment%29-instance-method" class="tooltip">
+      <span>comment=(comment)</span>
+    comment=</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#compressed_size-instance-method" class="tooltip">
+      <span>compressed_size</span>
+    compressed_size</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#compressed_size%3D%28compressed_size%29-instance-method" class="tooltip">
+      <span>compressed_size=(compressed_size)</span>
+    compressed_size=</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#compression_method-instance-method" class="tooltip">
+      <span>compression_method</span>
+    compression_method</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#compression_method%3D%28compression_method%29-instance-method" class="tooltip">
+      <span>compression_method=(compression_method)</span>
+    compression_method=</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#crc32-instance-method" class="tooltip">
+      <span>crc32</span>
+    crc32</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#crc32%3D%28crc32%29-instance-method" class="tooltip">
+      <span>crc32=(crc32)</span>
+    crc32=</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#dir%3F%3ABool-instance-method" class="tooltip">
+      <span>dir? : Bool</span>
+    dir?</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#extra-instance-method" class="tooltip">
+      <span>extra</span>
+    extra</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#extra%3D%28extra%29-instance-method" class="tooltip">
+      <span>extra=(extra)</span>
+    extra=</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#file%3F%3ABool-instance-method" class="tooltip">
+      <span>file? : Bool</span>
+    file?</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#filename-instance-method" class="tooltip">
+      <span>filename</span>
+    filename</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#filename%3D%28filename%29-instance-method" class="tooltip">
+      <span>filename=(filename)</span>
+    filename=</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#general_purpose_bit_flag-instance-method" class="tooltip">
+      <span>general_purpose_bit_flag</span>
+    general_purpose_bit_flag</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#general_purpose_bit_flag%3D%28general_purpose_bit_flag%29-instance-method" class="tooltip">
+      <span>general_purpose_bit_flag=(general_purpose_bit_flag)</span>
+    general_purpose_bit_flag=</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#offset-instance-method" class="tooltip">
+      <span>offset</span>
+    offset</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#offset%3D%28offset%29-instance-method" class="tooltip">
+      <span>offset=(offset)</span>
+    offset=</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#time%3ATime-instance-method" class="tooltip">
+      <span>time : Time</span>
+    time</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#time%3D%28time%3ATime%29-instance-method" class="tooltip">
+      <span>time=(time : Time)</span>
+    time=</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#uncompressed_size-instance-method" class="tooltip">
+      <span>uncompressed_size</span>
+    uncompressed_size</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#uncompressed_size%3D%28uncompressed_size%29-instance-method" class="tooltip">
+      <span>uncompressed_size=(uncompressed_size)</span>
+    uncompressed_size=</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#version%3AUInt16-instance-method" class="tooltip">
+      <span>version : UInt16</span>
+    version</a>, 
+    
+  
+    <a href="../../Zip64/FileInfo.html#version%3D%28version%3AUInt16%29-instance-method" class="tooltip">
+      <span>version=(version : UInt16)</span>
+    version=</a>
+    
+  
+
+
+      
+
+  <h3>Constructor methods inherited from module <code><a href="../../Zip64/FileInfo.html">Zip64::FileInfo</a></code></h3>
+  
+  
+    <a href="../../Zip64/FileInfo.html#new%28filename%3AString%2Ctime%3DTime.utc%2Ccomment%3D%22%22%2Cextra%3DBytes.empty%29-class-method" class="tooltip">
+      <span>new(filename : String, time = <span class="t">Time</span>.utc, comment = <span class="s">&quot;&quot;</span>, extra = <span class="t">Bytes</span>.empty)</span>
+    new</a>
+    
+  
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+
+</div>
+
+</body>
+</html>

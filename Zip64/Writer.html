@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Crystal Docs 1.18.2">
+<meta name="crystal_docs.project_version" content="main">
+<meta name="crystal_docs.project_name" content="zip64">
+
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/doc.js"></script>
+
+  <meta name="repository-name" content="zip64">
+  <title>Zip64::Writer - zip64 main</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill="currentColor" fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<input type="checkbox" id="sidebar-btn">
+<label for="sidebar-btn" id="sidebar-btn-label">
+  <svg class="open" xmlns="http://www.w3.org/2000/svg" height="2em" width="2em" viewBox="0 0 512 512"><title>Open Sidebar</title><path fill="currentColor" d="M80 96v64h352V96H80zm0 112v64h352v-64H80zm0 112v64h352v-64H80z"></path></svg>
+  <svg class="close" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 512 512"><title>Close Sidebar</title><path fill="currentColor" d="m118.6 73.4-45.2 45.2L210.7 256 73.4 393.4l45.2 45.2L256 301.3l137.4 137.3 45.2-45.2L301.3 256l137.3-137.4-45.2-45.2L256 210.7Z"></path></svg>
+</label>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../index.html">
+          zip64
+        </a>
+      </h1>
+
+      <span class="project-version">
+        main
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="zip64/Zip64" data-name="zip64">
+      <a href="../Zip64.html">Zip64</a>
+      
+        <ul>
+  
+  <li class=" " data-id="zip64/Zip64/CompressionMethod" data-name="zip64::compressionmethod">
+      <a href="../Zip64/CompressionMethod.html">CompressionMethod</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/CRC32Writer" data-name="zip64::crc32writer">
+      <a href="../Zip64/CRC32Writer.html">CRC32Writer</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/Error" data-name="zip64::error">
+      <a href="../Zip64/Error.html">Error</a>
+      
+    </li>
+  
+  <li class="parent " data-id="zip64/Zip64/File" data-name="zip64::file">
+      <a href="../Zip64/File.html">File</a>
+      
+        <ul>
+  
+  <li class=" " data-id="zip64/Zip64/File/Entry" data-name="zip64::file::entry">
+      <a href="../Zip64/File/Entry.html">Entry</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/FileInfo" data-name="zip64::fileinfo">
+      <a href="../Zip64/FileInfo.html">FileInfo</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/OutputCounter" data-name="zip64::outputcounter">
+      <a href="../Zip64/OutputCounter.html">OutputCounter</a>
+      
+    </li>
+  
+  <li class="parent " data-id="zip64/Zip64/Reader" data-name="zip64::reader">
+      <a href="../Zip64/Reader.html">Reader</a>
+      
+        <ul>
+  
+  <li class=" " data-id="zip64/Zip64/Reader/Entry" data-name="zip64::reader::entry">
+      <a href="../Zip64/Reader/Entry.html">Entry</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="zip64/Zip64/Serializer" data-name="zip64::serializer">
+      <a href="../Zip64/Serializer.html">Serializer</a>
+      
+        <ul>
+  
+  <li class=" " data-id="zip64/Zip64/Serializer/ZipCRC32" data-name="zip64::serializer::zipcrc32">
+      <a href="../Zip64/Serializer/ZipCRC32.html">ZipCRC32</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/Serializer/ZipFilesize" data-name="zip64::serializer::zipfilesize">
+      <a href="../Zip64/Serializer/ZipFilesize.html">ZipFilesize</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/Serializer/ZipGpFlags" data-name="zip64::serializer::zipgpflags">
+      <a href="../Zip64/Serializer/ZipGpFlags.html">ZipGpFlags</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/Serializer/ZipLocation" data-name="zip64::serializer::ziplocation">
+      <a href="../Zip64/Serializer/ZipLocation.html">ZipLocation</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/Serializer/ZipStorageMode" data-name="zip64::serializer::zipstoragemode">
+      <a href="../Zip64/Serializer/ZipStorageMode.html">ZipStorageMode</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="zip64/Zip64/Writer" data-name="zip64::writer">
+      <a href="../Zip64/Writer.html">Writer</a>
+      
+        <ul>
+  
+  <li class=" " data-id="zip64/Zip64/Writer/DuplicateEntryFilename" data-name="zip64::writer::duplicateentryfilename">
+      <a href="../Zip64/Writer/DuplicateEntryFilename.html">DuplicateEntryFilename</a>
+      
+    </li>
+  
+  <li class=" " data-id="zip64/Zip64/Writer/Entry" data-name="zip64::writer::entry">
+      <a href="../Zip64/Writer/Entry.html">Entry</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">
+    class
+  </span> Zip64::<wbr>Writer
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../Zip64/Writer.html">Zip64::Writer</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Writes (streams) zip entries to an <code>IO</code>.</p>
+<h3><a id="example" class="anchor" href="#example">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Example</h3>
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;zip64&quot;</span>
+
+<span class="t">File</span>.open(<span class="s">&quot;./file.zip&quot;</span>, <span class="s">&quot;w&quot;</span>) <span class="k">do</span> <span class="o">|</span>file<span class="o">|</span>
+  <span class="t">Zip64</span><span class="t">::</span><span class="t">Writer</span>.open(file) <span class="k">do</span> <span class="o">|</span>zip<span class="o">|</span>
+    <span class="c"># Add a file with a String content</span>
+    zip.add <span class="s">&quot;foo.txt&quot;</span>, <span class="s">&quot;contents of foo&quot;</span>
+
+    <span class="c"># Add a file and write data to it through an IO</span>
+    zip.add(<span class="s">&quot;bar.txt&quot;</span>) <span class="k">do</span> <span class="o">|</span>io<span class="o">|</span>
+      io <span class="o">&lt;&lt;</span> <span class="s">&quot;contents of bar&quot;</span>
+    <span class="k">end</span>
+
+    <span class="c"># Add a file by referencing a file in the filesystem</span>
+    <span class="c"># (the file is automatically closed after this call)</span>
+    zip.add(<span class="s">&quot;baz.txt&quot;</span>, <span class="t">File</span>.open(<span class="s">&quot;./some_file.txt&quot;</span>))
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L27" target="_blank">
+        zip64/writer.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28io%3AIO%2Csync_close%3ABool%3Dfalse%29-class-method" class="signature"><strong>.new</strong>(io : IO, sync_close : Bool = <span class="n">false</span>)</a>
+        
+          <div class="summary"><p>Creates a new writer to the given <em>io</em>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28filename%3APath%7CString%29-class-method" class="signature"><strong>.new</strong>(filename : Path | String)</a>
+        
+          <div class="summary"><p>Creates a new writer to the given <em>filename</em>.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+  
+  <h2>
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#open%28io%3AIO%2Csync_close%3Dfalse%2C%26%29-class-method" class="signature"><strong>.open</strong>(io : IO, sync_close = <span class="n">false</span>, &)</a>
+        
+          <div class="summary"><p>Creates a new writer to the given <em>io</em>, yields it to the given block, and closes it at the end.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#open%28filename%3APath%7CString%2C%26%29-class-method" class="signature"><strong>.open</strong>(filename : Path | String, &)</a>
+        
+          <div class="summary"><p>Creates a new writer to the given <em>filename</em>, yields it to the given block, and closes it at the end.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+  
+
+  
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#add%28filename%3APath%7CString%2C%26%29-instance-method" class="signature"><strong>#add</strong>(filename : Path | String, &)</a>
+        
+          <div class="summary"><p>Adds an entry that will have the given <em>filename</em> and current time (<code>Time.utc</code>) and yields an <code>IO</code> to write that entry's contents.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#add%28entry%3AEntry%2C%26%29-instance-method" class="signature"><strong>#add</strong>(entry : Entry, &)</a>
+        
+          <div class="summary"><p>Adds an Entry and yields <code>IO</code> for writing that entry's contents.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#add%28filename_or_entry%3APath%7CString%7CEntry%2Cstring%3AString%29%3ANil-instance-method" class="signature"><strong>#add</strong>(filename_or_entry : Path | String | Entry, string : String) : Nil</a>
+        
+          <div class="summary"><p>Adds an entry that will have <em>string</em> as its contents.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#add%28filename_or_entry%3APath%7CString%7CEntry%2Cbytes%3ABytes%29%3ANil-instance-method" class="signature"><strong>#add</strong>(filename_or_entry : Path | String | Entry, bytes : Bytes) : Nil</a>
+        
+          <div class="summary"><p>Adds an entry that will have <em>bytes</em> as its contents.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#add%28filename_or_entry%3APath%7CString%7CEntry%2Cdata%3AIO%29%3ANil-instance-method" class="signature"><strong>#add</strong>(filename_or_entry : Path | String | Entry, data : IO) : Nil</a>
+        
+          <div class="summary"><p>Adds an entry that will have its data copied from the given <em>data</em>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#add%28entry%3AEntry%29-instance-method" class="signature"><strong>#add</strong>(entry : Entry)</a>
+        
+          <div class="summary"><p>Adds an Entry to the Writer and writes out its local file header.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#add_dir%28name%29%3ANil-instance-method" class="signature"><strong>#add_dir</strong>(name) : Nil</a>
+        
+          <div class="summary"><p>Adds a directory entry that will have the given <em>name</em>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#close%3ANil-instance-method" class="signature"><strong>#close</strong> : Nil</a>
+        
+          <div class="summary"><p>Closes this zip writer.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#closed%3F%3ABool-instance-method" class="signature"><strong>#closed?</strong> : Bool</a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this writer is closed.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#comment%3D%28comment%3AString%29-instance-method" class="signature"><strong>#comment=</strong>(comment : String)</a>
+        
+          <div class="summary"><p>Sets the zip file comment</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#simulate_write%28by%3AInt%29-instance-method" class="signature"><strong>#simulate_write</strong>(by : Int)</a>
+        
+          <div class="summary"><p>Advance the internal offset by a number of bytes.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#sync_close%3D%28sync_close%3ABool%29-instance-method" class="signature"><strong>#sync_close=</strong>(sync_close : Bool)</a>
+        
+          <div class="summary"><p>Whether to close the enclosed <code>IO</code> when closing this writer.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#sync_close%3F%3ABool-instance-method" class="signature"><strong>#sync_close?</strong> : Bool</a>
+        
+          <div class="summary"><p>Whether to close the enclosed <code>IO</code> when closing this writer.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#written-instance-method" class="signature"><strong>#written</strong></a>
+        
+          <div class="summary"><p>How many bytes have been written into the destination IO so far</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <div class="methods-inherited">
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+  </div>
+
+  
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(io:IO,sync_close:Bool=false)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(io : IO, sync_close : Bool = <span class="n">false</span>)
+
+        <a class="method-permalink" href="#new%28io%3AIO%2Csync_close%3ABool%3Dfalse%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Creates a new writer to the given <em>io</em>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L42" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(filename:Path|String)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(filename : Path | String)
+
+        <a class="method-permalink" href="#new%28filename%3APath%7CString%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Creates a new writer to the given <em>filename</em>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L54" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+  
+  <h2>
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="open(io:IO,sync_close=false,&amp;)-class-method">
+      <div class="signature">
+        
+        def self.<strong>open</strong>(io : IO, sync_close = <span class="n">false</span>, &)
+
+        <a class="method-permalink" href="#open%28io%3AIO%2Csync_close%3Dfalse%2C%26%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Creates a new writer to the given <em>io</em>, yields it to the given block,
+and closes it at the end.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L60" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="open(filename:Path|String,&amp;)-class-method">
+      <div class="signature">
+        
+        def self.<strong>open</strong>(filename : Path | String, &)
+
+        <a class="method-permalink" href="#open%28filename%3APath%7CString%2C%26%29-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Creates a new writer to the given <em>filename</em>, yields it to the given block,
+and closes it at the end.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L67" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+  
+
+  
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="add(filename:Path|String,&amp;)-instance-method">
+      <div class="signature">
+        
+        def <strong>add</strong>(filename : Path | String, &)
+
+        <a class="method-permalink" href="#add%28filename%3APath%7CString%2C%26%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Adds an entry that will have the given <em>filename</em> and current
+time (<code>Time.utc</code>) and yields an <code>IO</code> to write that entry's
+contents.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L75" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="add(entry:Entry,&amp;)-instance-method">
+      <div class="signature">
+        
+        def <strong>add</strong>(entry : <a href="../Zip64/Writer/Entry.html">Entry</a>, &)
+
+        <a class="method-permalink" href="#add%28entry%3AEntry%2C%26%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Adds an Entry and yields <code>IO</code> for writing that entry's contents. After the IO
+has been written and the block terminates will write out the accumulated CRC32
+for the entry and the sizes as the data descriptor.</p>
+<p>Entry can be configured the same way as for <code><a href="../Zip64/Writer.html#add%28filename%3APath%7CString%2C%26%29-instance-method">#add()</a></code> without the block, however
+the bit 3 of the general_purpose_bit_flag is going to be forcibly set, and the
+compressed/uncompressed sizes and CRC32 are going to be reset to 0.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L88" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="add(filename_or_entry:Path|String|Entry,string:String):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>add</strong>(filename_or_entry : Path | String | <a href="../Zip64/Writer/Entry.html">Entry</a>, string : String) : Nil
+
+        <a class="method-permalink" href="#add%28filename_or_entry%3APath%7CString%7CEntry%2Cstring%3AString%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Adds an entry that will have <em>string</em> as its contents.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L158" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="add(filename_or_entry:Path|String|Entry,bytes:Bytes):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>add</strong>(filename_or_entry : Path | String | <a href="../Zip64/Writer/Entry.html">Entry</a>, bytes : Bytes) : Nil
+
+        <a class="method-permalink" href="#add%28filename_or_entry%3APath%7CString%7CEntry%2Cbytes%3ABytes%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Adds an entry that will have <em>bytes</em> as its contents.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L165" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="add(filename_or_entry:Path|String|Entry,data:IO):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>add</strong>(filename_or_entry : Path | String | <a href="../Zip64/Writer/Entry.html">Entry</a>, data : IO) : Nil
+
+        <a class="method-permalink" href="#add%28filename_or_entry%3APath%7CString%7CEntry%2Cdata%3AIO%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Adds an entry that will have its data copied from the given <em>data</em>.
+If the given <em>data</em> is a <code>::File</code>, it is automatically closed
+after data is copied from it.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L174" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="add(entry:Entry)-instance-method">
+      <div class="signature">
+        
+        def <strong>add</strong>(entry : <a href="../Zip64/Writer/Entry.html">Entry</a>)
+
+        <a class="method-permalink" href="#add%28entry%3AEntry%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Adds an Entry to the Writer and writes out its local file header.</p>
+<p>Calling the method without the block does not enable data descriptors, so the
+CRC32 for the entry has to be set upfront, as well as the correct <code>compressed_size</code>
+and <code>uncompressed_size</code></p>
+<p>You can choose the Entry's compression method before adding it.
+You can also set the Entry's time (which is <code>Time.utc</code> by default)
+and extra data before adding it to the zip stream.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L131" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="add_dir(name):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>add_dir</strong>(name) : Nil
+
+        <a class="method-permalink" href="#add_dir%28name%29%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Adds a directory entry that will have the given <em>name</em>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L182" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="close:Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>close</strong> : Nil
+
+        <a class="method-permalink" href="#close%3ANil-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Closes this zip writer.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L188" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="closed?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>closed?</strong> : Bool
+
+        <a class="method-permalink" href="#closed%3F%3ABool-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this writer is closed.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L36" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="comment=(comment:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>comment=</strong>(comment : String)
+
+        <a class="method-permalink" href="#comment%3D%28comment%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Sets the zip file comment</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L39" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="simulate_write(by:Int)-instance-method">
+      <div class="signature">
+        
+        def <strong>simulate_write</strong>(by : Int)
+
+        <a class="method-permalink" href="#simulate_write%28by%3AInt%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Advance the internal offset by a number of bytes.
+This can be useful for esimating the size of the resulting ZIP archive
+without having access to the contents of files that are going to be
+included in the archive later.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L227" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="sync_close=(sync_close:Bool)-instance-method">
+      <div class="signature">
+        
+        def <strong>sync_close=</strong>(sync_close : Bool)
+
+        <a class="method-permalink" href="#sync_close%3D%28sync_close%3ABool%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Whether to close the enclosed <code>IO</code> when closing this writer.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L33" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="sync_close?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>sync_close?</strong> : Bool
+
+        <a class="method-permalink" href="#sync_close%3F%3ABool-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Whether to close the enclosed <code>IO</code> when closing this writer.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L33" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="written-instance-method">
+      <div class="signature">
+        
+        def <strong>written</strong>
+
+        <a class="method-permalink" href="#written-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>How many bytes have been written into the destination IO so far</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/crystal-garage/crystal-zip64/blob/ff9b9c8e1cadd9b1d44438abbc58982f3c39db0e/src/zip64/writer.cr#L232" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+</div>
+
+</body>
+</html>
