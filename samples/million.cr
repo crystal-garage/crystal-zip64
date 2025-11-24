@@ -6,14 +6,14 @@ require "../src/zip64"
 dest = "out.zip"
 ii = 0
 begin
-  File.open(dest, "w") do |zipFile|
-    Zip64::Writer.open(zipFile) do |zip|
+  File.open(dest, "w") do |zip_file|
+    Zip64::Writer.open(zip_file) do |zip|
       1000000.times do |i|
         ii = i
 
         max = 5 * 1024
-        totalBytes = Random.rand(100..max)
-        zip.add "file#{i}", Random.new.random_bytes(totalBytes)
+        total_bytes = Random.rand(100..max)
+        zip.add "file#{i}", Random.new.random_bytes(total_bytes)
       end
     end
   end
