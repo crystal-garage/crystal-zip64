@@ -196,9 +196,9 @@ class Zip64::File
     read UInt32
     read UInt32
 
-    _entries_in_disk = read UInt64
+    read UInt64 # entries in disk
     entries_total = read UInt64
-    _central_directory_size = read UInt64
+    read UInt64 # central directory size
     directory_offset = read UInt64
 
     # Skip any extensible data sector if present
