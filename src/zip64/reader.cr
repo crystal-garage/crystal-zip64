@@ -127,9 +127,50 @@ class Zip64::Reader
 
   private def read_data_descriptor(entry, crc32 = nil)
     entry.crc32 = crc32 || (read UInt32)
-    entry.compressed_size = read(UInt32).to_u64
-    entry.uncompressed_size = read(UInt32).to_u64
+    if data_descriptor_uses_zip64_sizes?
+      entry.compressed_size = read(UInt64)
+      entry.uncompressed_size = read(UInt64)
+    else
+      entry.compressed_size = read(UInt32).to_u64
+      entry.uncompressed_size = read(UInt32).to_u64
+    end
     verify_checksum(entry)
+  end
+
+  private def data_descriptor_uses_zip64_sizes? : Bool
+    # After CRC32 in a data descriptor, sizes are either:
+    # - 4 + 4 bytes (standard)
+    # - 8 + 8 bytes (Zip64)
+    # We try to detect by peeking ahead and checking which offset is followed
+    # by a valid next record signature.
+    peek = @io.peek
+    return false unless peek
+
+    # If sizes are 4+4, the next signature begins 8 bytes from the current position.
+    if peek.size >= 12 && valid_next_record_signature?(uint32_le_at(peek, 8))
+      # If both look plausible, prefer 32-bit unless only 64-bit matches.
+      if peek.size >= 20 && valid_next_record_signature?(uint32_le_at(peek, 16))
+        return false
+      end
+      return false
+    end
+
+    if peek.size >= 20 && valid_next_record_signature?(uint32_le_at(peek, 16))
+      return true
+    end
+
+    false
+  end
+
+  private def valid_next_record_signature?(sig : UInt32) : Bool
+    sig == FileInfo::SIGNATURE ||
+      sig == Zip64::CENTRAL_DIRECTORY_HEADER_SIGNATURE ||
+      sig == Zip64::END_OF_CENTRAL_DIRECTORY_HEADER_SIGNATURE ||
+      sig == FileInfo::DATA_DESCRIPTOR_SIGNATURE
+  end
+
+  private def uint32_le_at(bytes : Bytes, offset : Int32) : UInt32
+    IO::Memory.new(bytes[offset, 4]).read_bytes(UInt32, IO::ByteFormat::LittleEndian)
   end
 
   private def verify_checksum(entry)
