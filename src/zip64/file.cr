@@ -196,9 +196,9 @@ class Zip64::File
     read UInt32
     read UInt32
 
-    entries_in_disk = read UInt64
+    _entries_in_disk = read UInt64
     entries_total = read UInt64
-    central_directory_size = read UInt64
+    _central_directory_size = read UInt64
     directory_offset = read UInt64
 
     # Skip any extensible data sector if present
@@ -245,7 +245,7 @@ class Zip64::File
     # Yields an `IO` to read this entry's contents.
     # Multiple entries can be opened and read concurrently.
     def open(&)
-      if (path = @source_path)
+      if path = @source_path
         ::File.open(path, "r") do |file|
           file.pos = to_i64_checked(offset, "local header offset")
           file.pos = to_i64_checked(data_offset_from(file), "entry data offset")
