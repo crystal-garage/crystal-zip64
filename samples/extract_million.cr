@@ -33,12 +33,12 @@ Dir.mkdir_p(dest_dir)
 # Returns a relative, safe path (using forward slashes in ZIP names), or nil to skip.
 private def safe_relative_path(name : String) : String?
   # Reject absolute paths and Windows drive paths.
-  return nil if name.starts_with?("/") || name.starts_with?("\\")
-  return nil if name.size >= 2 && name[1] == ':'
+  return if name.starts_with?("/") || name.starts_with?("\\")
+  return if name.size >= 2 && name[1] == ':'
 
   # Split on both separators to be safe.
   parts = name.split(/[\\\/]+/).reject(&.empty?)
-  return nil if parts.any? { |p| p == ".." }
+  return if parts.any? &.==("..")
 
   parts.join(File::SEPARATOR)
 end
@@ -62,8 +62,8 @@ Zip64::Reader.open(zip_path) do |zip|
       parent = ::File.dirname(out_path)
       Dir.mkdir_p(parent) unless parent == "."
 
-      ::File.open(out_path, "w") do |f|
-        IO.copy(entry.io, f)
+      ::File.open(out_path, "w") do |file|
+        IO.copy(entry.io, file)
       end
     end
 
