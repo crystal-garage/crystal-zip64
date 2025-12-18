@@ -17,6 +17,8 @@ module Zip64::FileInfo
   property comment = ""
   property offset = 0_u64
 
+  ZIP64_EXTRA_FIELD_ID = 0x0001_u16
+
   # :nodoc:
   def initialize(*, at_file_header io : IO)
     @version = read(io, UInt16)
@@ -27,6 +29,8 @@ module Zip64::FileInfo
       @extra = Bytes.new(extra_field_length)
       io.read_fully(@extra)
     end
+
+    apply_zip64_extra_from_local_header!
   end
 
   # :nodoc:
@@ -36,10 +40,10 @@ module Zip64::FileInfo
     file_name_length, extra_field_length, time = initialize_meta(io)
     @time = time
     file_comment_length = read(io, UInt16) # file comment length
-    read(io, UInt16)                       # disk number start
+    disk_number_start = read(io, UInt16)   # disk number start
     read(io, UInt16)                       # internal file attribute
     read(io, UInt32)                       # external file attribute
-    @offset = read(io, UInt32).to_u64      # relative offset of local header
+    offset_32 = read(io, UInt32).to_u64    # relative offset of local header
     @filename = io.read_string(file_name_length)
     if extra_field_length != 0
       @extra = Bytes.new(extra_field_length)
@@ -48,6 +52,9 @@ module Zip64::FileInfo
     if file_comment_length != 0
       @comment = io.read_string(file_comment_length)
     end
+
+    @offset = offset_32
+    apply_zip64_extra_from_central_directory!(disk_number_start, offset_32)
   end
 
   # :nodoc:
@@ -63,6 +70,72 @@ module Zip64::FileInfo
     file_name_length = read(io, UInt16)
     extra_field_length = read(io, UInt16)
     {file_name_length, extra_field_length, time}
+  end
+
+  private def apply_zip64_extra_from_local_header!
+    # Local header: if compressed/uncompressed sizes are 0xFFFFFFFF, the Zip64 extra field
+    # provides the real 64-bit values in order: uncompressed size, compressed size.
+    return unless @compressed_size == UInt32::MAX.to_u64 || @uncompressed_size == UInt32::MAX.to_u64
+
+    zip64_extra = zip64_extra_payload(@extra)
+    return unless zip64_extra
+
+    io = IO::Memory.new(zip64_extra)
+    if @uncompressed_size == UInt32::MAX.to_u64
+      @uncompressed_size = read(io, UInt64)
+    end
+    if @compressed_size == UInt32::MAX.to_u64
+      @compressed_size = read(io, UInt64)
+    end
+  end
+
+  private def apply_zip64_extra_from_central_directory!(disk_number_start : UInt16, offset_32 : UInt64)
+    # Central directory: Zip64 extra field contains 64-bit values for any field that overflowed.
+    need_uncompressed = (@uncompressed_size == UInt32::MAX.to_u64)
+    need_compressed = (@compressed_size == UInt32::MAX.to_u64)
+    need_offset = (offset_32 == UInt32::MAX.to_u64)
+    need_disk = (disk_number_start == UInt16::MAX)
+    return unless need_uncompressed || need_compressed || need_offset || need_disk
+
+    zip64_extra = zip64_extra_payload(@extra)
+    return unless zip64_extra
+
+    io = IO::Memory.new(zip64_extra)
+    if need_uncompressed
+      @uncompressed_size = read(io, UInt64)
+    end
+    if need_compressed
+      @compressed_size = read(io, UInt64)
+    end
+    if need_offset
+      @offset = read(io, UInt64)
+    end
+    if need_disk
+      # The Zip64 extra specifies this as a 4-byte value.
+      read(io, UInt32)
+    end
+  end
+
+  private def zip64_extra_payload(extra : Bytes) : Bytes?
+    return if extra.empty?
+
+    i = 0
+    while i + 4 <= extra.size
+      header_id = IO::Memory.new(extra[i, 2]).read_bytes(UInt16, IO::ByteFormat::LittleEndian)
+      data_size = IO::Memory.new(extra[i + 2, 2]).read_bytes(UInt16, IO::ByteFormat::LittleEndian)
+
+      payload_start = i + 4
+      payload_end = payload_start + data_size
+      break if payload_end > extra.size
+
+      if header_id == ZIP64_EXTRA_FIELD_ID
+        return extra[payload_start, data_size]
+      end
+
+      i = payload_end
+    end
+
+    nil
   end
 
   def initialize(@filename : String, @time = Time.utc, @comment = "", @extra = Bytes.empty)

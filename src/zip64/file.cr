@@ -34,8 +34,14 @@ class Zip64::File
   # Returns the zip file comment.
   getter comment = ""
 
+  @source_path : String?
+
   # Opens a `Zip64::File` for reading from the given *io*.
   def initialize(@io : IO, @sync_close = false)
+    if @io.is_a?(::File)
+      @source_path = @io.as(::File).path
+    end
+
     directory_end_offset = find_directory_end_offset
     entries_size, directory_offset = read_directory_end(directory_end_offset)
     @entries = Array(Entry).new(entries_size)
@@ -121,21 +127,91 @@ class Zip64::File
       raise Error.new("Expected end of central directory header signature, not 0x#{signature.to_s(16)}")
     end
 
-    read Int16                     # number of this disk
-    read Int16                     # disk start
-    read Int16                     # number of entries in disk
-    entries_size = read Int16      # number of total entries
-    read UInt32                    # size of the central directory
-    directory_offset = read UInt32 # offset of central directory
-    comment_length = read UInt16   # comment length
+    read UInt16                              # number of this disk
+    read UInt16                              # disk start
+    entries_in_disk = read(UInt16)           # number of entries in disk
+    entries_size_16 = read(UInt16)           # number of total entries
+    central_directory_size_32 = read(UInt32) # size of the central directory
+    directory_offset_32 = read(UInt32)       # offset of central directory
+    comment_length = read(UInt16)            # comment length
     if comment_length != 0
       @comment = @io.read_string(comment_length)
     end
-    {entries_size, directory_offset}
+
+    zip64_required = entries_in_disk == UInt16::MAX ||
+                     entries_size_16 == UInt16::MAX ||
+                     central_directory_size_32 == UInt32::MAX ||
+                     directory_offset_32 == UInt32::MAX
+
+    if zip64_required
+      entries_size_64, directory_offset_64 = read_zip64_directory_end(directory_end_offset)
+      entries_size = entries_size_64
+      directory_offset = directory_offset_64
+    else
+      entries_size = entries_size_16.to_u64
+      directory_offset = directory_offset_32.to_u64
+    end
+
+    if entries_size > Int32::MAX.to_u64
+      raise Zip64::Error.new("Too many entries to load into memory: #{entries_size}")
+    end
+    if directory_offset > Int64::MAX.to_u64
+      raise Zip64::Error.new("Central directory offset is too large: #{directory_offset}")
+    end
+
+    {entries_size.to_i, directory_offset.to_u64}
+  end
+
+  private def read_zip64_directory_end(directory_end_offset : Int)
+    # Zip64 locator is 20 bytes and immediately precedes the EOCD record.
+    locator_offset = directory_end_offset.to_i64 - 20
+    if locator_offset < 0
+      raise Zip64::Error.new("Zip64 locator offset is negative")
+    end
+
+    @io.pos = locator_offset
+    signature = read UInt32
+    if signature != Zip64::ZIP64_END_OF_CENTRAL_DIRECTORY_LOCATOR
+      raise Zip64::Error.new("Expected Zip64 locator signature, not 0x#{signature.to_s(16)}")
+    end
+
+    read UInt32 # number of the disk with the start of the zip64 end of central directory
+    zip64_eocd_offset = read(UInt64)
+    read UInt32 # total number of disks
+
+    if zip64_eocd_offset > Int64::MAX.to_u64
+      raise Zip64::Error.new("Zip64 EOCD offset is too large: #{zip64_eocd_offset}")
+    end
+
+    @io.pos = zip64_eocd_offset.to_i64
+    signature = read UInt32
+    if signature != Zip64::ZIP64_END_OF_CENTRAL_DIRECTORY_SIGNATURE
+      raise Zip64::Error.new("Expected Zip64 EOCD signature, not 0x#{signature.to_s(16)}")
+    end
+
+    size_of_record = read UInt64
+    # Next: version made by (2), version needed (2), disk number (4), disk start (4)
+    read UInt16
+    read UInt16
+    read UInt32
+    read UInt32
+
+    read UInt64 # entries in disk
+    entries_total = read UInt64
+    read UInt64 # central directory size
+    directory_offset = read UInt64
+
+    # Skip any extensible data sector if present
+    remaining = size_of_record.to_i64 - 44
+    if remaining > 0
+      @io.skip(remaining)
+    end
+
+    {entries_total, directory_offset}
   end
 
   private def read_entries(directory_offset, entries_size)
-    @io.pos = directory_offset
+    @io.pos = directory_offset.to_i64
 
     entries_size.times do
       signature = read UInt32
@@ -143,7 +219,7 @@ class Zip64::File
         raise Error.new("Expected directory header signature, not 0x#{signature.to_s(16)}")
       end
 
-      entry = Entry.new(@io)
+      entry = Entry.new(@io, @source_path)
       @entries << entry
       @entries_by_filename[entry.filename] = entry
     end
@@ -159,18 +235,31 @@ class Zip64::File
   class Entry
     include FileInfo
 
+    @source_path : String?
+
     # :nodoc:
-    def initialize(@io : IO)
+    def initialize(@io : IO, @source_path : String? = nil)
       super(at_central_directory_header: io)
     end
 
     # Yields an `IO` to read this entry's contents.
     # Multiple entries can be opened and read concurrently.
     def open(&)
-      @io.read_at(data_offset.to_i32, compressed_size.to_i32) do |io|
-        io = decompressor_for(io, is_sized: true)
-        checksum_reader = ChecksumReader.new(io, filename, verify: crc32)
-        yield checksum_reader
+      if path = @source_path
+        ::File.open(path, "r") do |file|
+          file.pos = to_i64_checked(offset, "local header offset")
+          file.pos = to_i64_checked(data_offset_from(file), "entry data offset")
+          sized = IO::Sized.new(file, to_i64_checked(compressed_size, "entry compressed size"))
+          io = decompressor_for(sized, is_sized: true)
+          checksum_reader = ChecksumReader.new(io, filename, verify: crc32)
+          yield checksum_reader
+        end
+      else
+        @io.read_at(to_i32_checked(data_offset, "entry data offset"), to_i32_checked(compressed_size, "entry compressed size")) do |io|
+          io = decompressor_for(io, is_sized: true)
+          checksum_reader = ChecksumReader.new(io, filename, verify: crc32)
+          yield checksum_reader
+        end
       end
     end
 
@@ -184,26 +273,41 @@ class Zip64::File
       #
       # This 30 and 22 constants are burned inside the zip spec and
       # will never change.
-      @io.read_at(offset.to_i32, 30) do |io|
-        # at least check that the signature is OK (these are 4 bytes)
-        signature = read(io, UInt32)
-        if signature != FileInfo::SIGNATURE
-          raise Zip64::Error.new("Wrong local file header signature (expected 0x#{FileInfo::SIGNATURE.to_s(16)}, got 0x#{signature.to_s(16)})")
-        end
-
-        # Skip most of the headers except filename length and extra length
-        # (skip 22, so we already read 26 bytes)
-        io.skip(22)
-
-        # With these two we read 4 bytes more, so we are at 30 bytes
-        filename_length = read(io, UInt16)
-        extra_length = read(io, UInt16)
-
-        # The data of this entry comes at the local file header offset
-        # plus 30 bytes (the ones we just skipped) plus skipping the
-        # filename's bytes plus skipping the extra bytes.
-        @offset + 30 + filename_length + extra_length
+      @io.read_at(to_i32_checked(offset, "local header offset"), 30) do |io|
+        data_offset_from(io)
       end
+    end
+
+    private def data_offset_from(io : IO) : UInt64
+      # Read and validate local file header.
+      signature = read(io, UInt32)
+      if signature != FileInfo::SIGNATURE
+        raise Zip64::Error.new("Wrong local file header signature (expected 0x#{FileInfo::SIGNATURE.to_s(16)}, got 0x#{signature.to_s(16)})")
+      end
+
+      # Skip most of the headers except filename length and extra length
+      # (skip 22, so we already read 26 bytes)
+      io.skip(22)
+
+      # With these two we read 4 bytes more, so we are at 30 bytes
+      filename_length = read(io, UInt16)
+      extra_length = read(io, UInt16)
+
+      @offset + 30 + filename_length + extra_length
+    end
+
+    private def to_i32_checked(value : UInt64, label : String) : Int32
+      if value > Int32::MAX.to_u64
+        raise Zip64::Error.new("#{label} is too large for IO#read_at: #{value}")
+      end
+      value.to_i32
+    end
+
+    private def to_i64_checked(value : UInt64, label : String) : Int64
+      if value > Int64::MAX.to_u64
+        raise Zip64::Error.new("#{label} is too large: #{value}")
+      end
+      value.to_i64
     end
   end
 end
