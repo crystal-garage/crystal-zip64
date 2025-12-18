@@ -50,6 +50,6 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v6
       - name: Install dependencies
-        run: shards install
+        run: shards install --skip-postinstall --skip-executables
       - name: Run tests
         run: crystal spec
