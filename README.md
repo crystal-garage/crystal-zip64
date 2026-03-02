@@ -70,6 +70,13 @@ File.open("./file.zip", "w") do |file|
 end
 ```
 
+## Limitations
+
+- Only compression methods 0 (STORED) and 8 (DEFLATED) are supported.
+- Encrypted ZIPs (traditional PKZIP or AES) are not supported.
+- Multi-disk (split) ZIP archives are not supported.
+- For very large archives, prefer `Zip64::Reader` (streaming). `Zip64::File` provides random access and supports Zip64 structures, but non-`File` inputs may be constrained by the underlying IO APIs.
+
 ## Contributing
 
 1. Fork it (<https://github.com/crystal-garage/crystal-zip64/fork>)

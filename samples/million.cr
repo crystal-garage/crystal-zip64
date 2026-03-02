@@ -8,7 +8,7 @@ ii = 0
 begin
   File.open(dest, "w") do |zip_file|
     Zip64::Writer.open(zip_file) do |zip|
-      1000000.times do |i|
+      2_000_000.times do |i|
         ii = i
 
         max = 5 * 1024
@@ -22,3 +22,6 @@ rescue e
   puts e.inspect_with_backtrace
 end
 puts "done"
+
+# du -ch out.zip
+# 5,2G    out.zip

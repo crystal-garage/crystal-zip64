@@ -7,6 +7,11 @@ authors:
   - Julik Tarkhanov <me@julik.nl>
   - Anton Maminov <anton.maminov@gmail.com>
 
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+    branch: master
+
 crystal: ">= 1.0.0"
 
 license: MIT
